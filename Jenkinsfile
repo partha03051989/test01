@@ -29,7 +29,7 @@ node {
 	    }
          stage("Deploy To Kuberates Cluster"){
        		kubernetesDeploy(
-         	configs: 'sample-dockerimagedeploy.yml', 
+         	configs: 'sample-dockerimagedeploy.yaml', 
          	kubeconfigId: 'KUBERNATES_CONFIG',
          	enableConfigSubstitution: true
         		)
