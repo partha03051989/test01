@@ -28,11 +28,16 @@ node {
 	        }    
 	    }
          stage("Deploy To Kuberates Cluster"){
-       		kubernetesDeploy(
-         	configs: 'sample-dockerimagedeploy.yaml', 
-         	kubeconfigId: 'KUBERNATES_CONFIG',
-         	enableConfigSubstitution: true
-        		)
+       		sshagent(['Kube-config']) {
+                      sh "scp -o StrictHostKeyChecking=no sample-dockerimagedeploy.yaml generic@192.168.43.101:/home/generic/"
+			script{
+				try{
+					sh "ssh generic@192.168.43.101 kubectl apply -f ."
+				}catch(error){
+					sh "ssh generic@192.168.43.101 kubectl create -f ."
+				}
+			}
+		   }
      		}
 	} catch (e) {
 		echo 'Error occurred during build process!'
