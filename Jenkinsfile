@@ -30,7 +30,6 @@ node {
          stage("Deploy To Kuberates Cluster"){
                       sh 'scp -o StrictHostKeyChecking=no sample-dockerimagedeploy.yaml generic@192.168.43.101:/home/generic/'
 		      sh 'ssh generic@192.168.43.101 kubectl apply -f .'
-		   }
      		}
 	} catch (e) {
 		echo 'Error occurred during build process!'
