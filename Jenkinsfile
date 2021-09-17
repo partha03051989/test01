@@ -24,7 +24,7 @@ node {
 	    
 	    stage('Push') {
 	    	docker.withRegistry('https://registry.hub.docker.com', 'dockerhub_id') {            
-				app.push("${env.BUILD_NUMBER}")
+				app.push("latest")
 	        }    
 	    }
 	} catch (e) {
