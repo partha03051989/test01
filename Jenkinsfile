@@ -27,6 +27,13 @@ node {
 				app.push("latest")
 	        }    
 	    }
+         stage("Deploy To Kuberates Cluster"){
+       		kubernetesDeploy(
+         	configs: 'ssample-dockerimagedeployment.yml', 
+         	kubeconfigId: 'KUBERNATES_CONFIG',
+         	enableConfigSubstitution: true
+        		)
+     		}
 	} catch (e) {
 		echo 'Error occurred during build process!'
 		echo e.toString()
