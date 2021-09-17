@@ -28,15 +28,8 @@ node {
 	        }    
 	    }
          stage("Deploy To Kuberates Cluster"){
-       		sshagent(['Kube-config']) {
-                      sh "scp -o StrictHostKeyChecking=no sample-dockerimagedeploy.yaml generic@192.168.43.101:/home/generic/"
-			script{
-				try{
-					sh "ssh generic@192.168.43.101 kubectl apply -f ."
-				}catch(error){
-					sh "ssh generic@192.168.43.101 kubectl create -f ."
-				}
-			}
+                      sh 'scp -o StrictHostKeyChecking=no sample-dockerimagedeploy.yaml generic@192.168.43.101:/home/generic/'
+		      sh 'ssh generic@192.168.43.101 kubectl apply -f .'
 		   }
      		}
 	} catch (e) {
