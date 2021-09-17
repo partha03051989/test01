@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: docker-image
+  labels:
+    app: docker-image
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: docker-image
+  template:
+    metadata:
+      labels:
+        app: docker-image
+    spec:
+      containers:
+      - name: docker-image
+        image: partha03051989/test01:latest
+        ports:
+        - containerPort: 8082
+      imagePullSecrets:
+      - name: dhrrsecret
+
