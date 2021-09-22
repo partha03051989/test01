@@ -10,9 +10,8 @@ node {
 	        	url: 'https://github.com/partha03051989/test01.git'
 	    }
 		stage('SonarQubeScanner'){
-			 def scannerHome = tool 'sonarqube';
-                         withSonarQubeEnv(){
-                        sh "${scannerHome}/sonar-scanner"
+                         withSonarQubeEnv('sonarqube'){
+                        sh 'mvn sonar:sonar'
 			 }
 		}
 	
