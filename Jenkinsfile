@@ -8,7 +8,23 @@ node {
 	    	git branch: branch,
 	        	credentialsId: 'GitHub Credentials',
 	        	url: 'https://github.com/partha03051989/test01.git'
-	    } 
+	    }
+		stage('SonarQubeScanner'){
+			steps{
+				script{
+					withSonarQubeEnv('sonarqubeserver'){
+						sh 'sonar:sonar'
+						
+					}
+					timeout(time: 1,until: 'HOURS'){
+						def qg:=waitforQualityGate()
+						if(qg.status!='OK'){
+							error "Pipeline aborted due to quality gate failure: ${qg.status}"
+						}
+					}
+				}
+			}
+		}
 	
 		stage('Build JAR') {
 	    	docker.image('maven:3.6.3-jdk-11').inside('-v /root/.m2:/root/.m2') {
@@ -27,10 +43,6 @@ node {
 				app.push("latest")
 	        }    
 	    }
-         stage("Deploy To Kuberates Cluster"){
-                      sh 'scp -o StrictHostKeyChecking=no sample-dockerimagedeploy.yaml generic@192.168.43.101:/home/generic/'
-		      sh 'ssh generic@192.168.43.101 kubectl apply -f .'
-     		}
 	} catch (e) {
 		echo 'Error occurred during build process!'
 		echo e.toString()
