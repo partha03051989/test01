@@ -12,7 +12,7 @@ node {
 		stage('SonarQubeScanner'){
 			steps{
 				script{
-					withSonarQubeEnv('sonarqubeserver'){
+					withSonarQubeEnv('SonarQube'){
 						sh 'sonar:sonar'
 						
 					}
