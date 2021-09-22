@@ -10,7 +10,7 @@ node {
 	        	url: 'https://github.com/partha03051989/test01.git'
 	    }
 		stage('SonarQubeScanner'){
-                         withSonarQubeEnv('sonarqube'){
+                         withSonarQubeEnv('SonarQube'){
                         sh 'mvn sonar:sonar'
 			 }
 		}
