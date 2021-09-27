@@ -14,6 +14,10 @@ node {
                             sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar -Dsonar.login="admin" -Dsonar.password="sarathi1@DO" '
 			 }
 		}
+	        stage("Quality gate") {
+                 steps {
+                     waitForQualityGate abortPipeline: true
+                   }
 	
 		stage('Build JAR') {
 	    	docker.image('maven:3.6.3-jdk-11').inside('-v /root/.m2:/root/.m2') {
