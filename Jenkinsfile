@@ -4,38 +4,30 @@ node {
 	def branch = 'master'
 	
 	try {
-		stage('Clone repository') {               
+		stage('Clone Repository') {               
 	    	git branch: branch,
 	        	credentialsId: 'GitHub Credentials',
 	        	url: 'https://github.com/partha03051989/test01.git'
 	    }
-		stage('SonarQubeScanner'){
+		stage('Sonar Qube Code Check'){
                          withSonarQubeEnv(credentialsId: 'SonarQube',installationName: 'SonarQube'){	 
                             sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar -Dsonar.login="admin" -Dsonar.password="sarathi1@DO" '
 			 }
 		}
-	        stage("Quality gate") {
-			timeout(time: 1, unit: 'HOURS'){
-				def qg = waitForQualityGate()
-				if (qg.status != 'OK'){
-					error "Pipeline aborted due to quality gate failure: ${qg.status}"
-				}
-			}
-		}	
-	
-		stage('Build JAR') {
+	       
+		stage('Building Artifactory') {
 	    	docker.image('maven:3.6.3-jdk-11').inside('-v /root/.m2:/root/.m2') {
 	        	sh 'mvn -B clean package'
 	        	stash includes: '**/target/my-app-1.0-SNAPSHOT.jar', name: 'jar'
 	    	}
 	    }
 	     
-	    stage('Build Image') {
+	    stage('Build Docker Image') {
 	    	unstash 'jar'
 			app = docker.build image
 	    }
 	    
-	    stage('Push') {
+	    stage('Pushing Docker Image') {
 	    	docker.withRegistry('https://registry.hub.docker.com', 'dockerhub_id') {            
 				app.push("latest")
 	        }    
