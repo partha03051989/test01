@@ -18,6 +18,7 @@ node {
                  steps {
                      waitForQualityGate abortPipeline: true
                    }
+		}	
 	
 		stage('Build JAR') {
 	    	docker.image('maven:3.6.3-jdk-11').inside('-v /root/.m2:/root/.m2') {
