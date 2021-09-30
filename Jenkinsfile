@@ -6,12 +6,12 @@ node {
 	try {
 		stage('Clone Repository') {               
 	    	git branch: branch,
-	        	credentialsId: 'GitHub Credentials',
+	        	credentialsId: 'GitHub_ID',
 	        	url: 'https://github.com/partha03051989/test01.git'
 	    }
 		stage('Sonar Qube Code Check'){
-                         withSonarQubeEnv(credentialsId: 'SonarQube',installationName: 'SonarQube'){	 
-                            sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar -Dsonar.login="admin" -Dsonar.password="sarathi1@DO" '
+                         withSonarQubeEnv(credentialsId: 'sonar',installationName: 'SonarQube-7.0'){	 
+                            sh 'mvn sonar:sonar'
 			 }
 		}
 	       
